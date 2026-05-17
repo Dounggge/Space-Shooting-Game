@@ -4,101 +4,67 @@ using System.Collections;
 public class PlayerHealth : Health
 {
     [SerializeField] int playerMaxHealth = 100;
-    [SerializeField] int hitsPerAnimationUpdate = 2;   // Cập nhật animation máu sau mỗi ? đòn
-    [SerializeField] Animator animator;                // Kéo thả Animator của Player vào đây
-    [SerializeField] float damage = 10f;                        // Sát thương mặc định khi va chạm với enemy
+    [SerializeField] int damageOfPlayer = 10;
+    [SerializeField] Sprite[] spriteUpdate;
 
-    private int hitCounter;
-    private int lastAnimatedHealth;                    // Máu ở lần cập nhật animation cuối
+    SpriteRenderer spriteRenderer;
 
-    // Tham số trong Animator (có thể đổi tên nếu cần)
-    private readonly string healthRatioParam = "HealthRatio";
-    private readonly string hurtTriggerParam = "Hurt";
 
     void Awake()
     {
-        maxHealth = playerMaxHealth;
-        currentHealth = maxHealth;
-        lastAnimatedHealth = currentHealth;
-        hitCounter = 0;
+        if (spriteUpdate == null || spriteUpdate.Length == 0)
+        {
+            Debug.LogError("PlayerHealth: Sprite array is not assigned or empty!");
+        }
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = spriteUpdate[0];
 
-        // Đăng ký sự kiện để nhận thông báo mỗi khi máu thay đổi
+        ResetHealth(playerMaxHealth);
+
+        HealthUpdate += null;
         HealthUpdate += OnHealthChanged;
-
-        // Nếu chưa gán animator từ Inspector, tự tìm
-        if (animator == null)
-            animator = GetComponent<Animator>();
     }
 
-    // Gọi method này từ bên ngoài (OnTriggerEnter2D, va chạm đạn, ...) để gây sát thương
-    public void ApplyDamage(int damage)
-    {
-        if (damage <= 0) return;
 
-        // Trừ máu thực (gọi base.TakeDamage)
-        TakeDamage(damage);
 
-        // Tăng đếm số đòn
-        hitCounter++;
-
-        // animation bị đánh (phản ứng tức thì) – tuỳ chọn
-        if (animator != null)
-            animator.SetTrigger(hurtTriggerParam);
-    }
-
-    // Sự kiện kích hoạt mỗi khi máu thay đổi (do HealthUpdate?.Invoke)
     private void OnHealthChanged(int current, int max)
     {
-        // Nếu đã đủ số đòn để cập nhật animation trạng thái máu
-        if (hitCounter >= hitsPerAnimationUpdate)
+        if (spriteUpdate == null || spriteUpdate.Length == 0 || spriteRenderer == null)
+            return;
+
+        float healthPercent = (float)current / max;
+        while (healthPercent <= 0f || healthPercent > 1f)
         {
-            hitCounter = 0;
-            UpdateHealthAnimation(current);
-            lastAnimatedHealth = current;
+            ResetHealth(playerMaxHealth);
+            spriteRenderer.sprite = spriteUpdate[0];
         }
-        // Có thể thêm logic khác nếu cần hiển thị số máu text (không liên quan)
+        if (healthPercent <= 0.75f && healthPercent > 0.5f)
+            spriteRenderer.sprite = spriteUpdate[1];
+        else if (healthPercent <= 0.5f && healthPercent > 0.25f)
+            spriteRenderer.sprite = spriteUpdate[2];
+        else if(healthPercent <= 0.25f && healthPercent > 0f)
+            spriteRenderer.sprite = spriteUpdate[3];
     }
 
-    // Cập nhật tham số HealthRatio cho Animator
-    private void UpdateHealthAnimation(int currentHealth)
-    {
-        if (animator == null) return;
 
-        float ratio = (float)currentHealth / maxHealth;
-        animator.SetFloat(healthRatioParam, ratio);
-    }
-
-    // Khi player chết
     protected override void Die()
     {
-        // Có thể chơi animation chết ở đây, sau đó load scene
-        // Ví dụ:
-        // animator.SetTrigger("Die");
-        // Invoke("LoadGameOver", 1f); // delay 1 giây
-        LoadGameOverScreen();
+        //particle effect
+        //StartCoroutine(LoadGameOverScreen());
+        Destroy(gameObject);
     }
 
-    void LoadGameOverScreen()
+    /*IEnumerator LoadParticle()
     {
-        UnityEngine.SceneManagement.SceneManager.LoadScene("GameOver");
-    }
+        //yield return new WaitForSeconds(2f);
+        //SceneManager.Instance.GameOverScene();
+    }*/
 
-    // Xử lý va chạm trigger với enemy (gắn script này lên Player)
     void OnTriggerEnter2D(Collider2D other)
     {
-        // Giả sử enemy có tag "Enemy" và gây sát thương cố định hoặc lấy từ component
-        if (other.CompareTag("Enemy"))
+        if(other.TryGetComponent<IDamageDealer>(out var dealer))
         {
-            int damage = 10; // Mặc định hoặc lấy từ other.GetComponent<Enemy>().damage
-            ApplyDamage(damage);
+            TakeDamage(damageOfPlayer);
         }
-    }
-
-    // Hàm Hit() có thể dùng cho các loại sát thương khác (đạn, gai...)
-    public void Hit()
-    {
-        // Gọi từ bên ngoài, ví dụ: PlayerHealth.Hit()
-        // Có thể truyền tham số damage nếu cần
-        ApplyDamage(10);
     }
 }

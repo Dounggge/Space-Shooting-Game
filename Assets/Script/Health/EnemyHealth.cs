@@ -1,33 +1,37 @@
 ﻿using UnityEngine;
 
-public class EnemyHealth : Health, IDamageDealer
-{
+public class EnemyHealth : Health
+{ 
     [SerializeField] int enemyMaxHealth = 50;
+    [SerializeField] int damageOfEnemy = 10;
     Pools pool;
 
     public void Init(Pools enemyPool)
     {
         pool = enemyPool;
-        maxHealth = enemyMaxHealth;
 
-        // Xóa event cũ — bắt buộc vì dùng Pool
         HealthUpdate += null;
         HealthUpdate += UpdateAnimation;
 
-        ResetHealth();
+        ResetHealth(enemyMaxHealth);
     }
 
-    // Abstract method — enemy chết theo cách riêng
     protected override void Die()
     {
         pool.ReturnObject(gameObject);
     }
 
-    void UpdateAnimation(int current, int max) { }
+    void UpdateAnimation(int current, int max)
+    { }
 
-    public void Hit()
+
+    void OnTriggerEnter2D(Collider2D other)
     {
-        // Enemy có thể phản đòn hoặc có hiệu ứng khi bị hit
+        if (other.CompareTag("Player"))
+        {
+            TakeDamage(damageOfEnemy);
+        }
     }
+
 
 }

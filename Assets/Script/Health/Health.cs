@@ -9,7 +9,7 @@ public abstract class Health : MonoBehaviour
     public event Action<int, int> HealthUpdate; //current health, max health
 
 
-    public virtual void TakeDamage(int damage)
+    protected virtual void TakeDamage(int damage)
     {
         if (damage <= 0) return;
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
@@ -18,19 +18,19 @@ public abstract class Health : MonoBehaviour
         if (currentHealth <= 0) Die();
     }
 
-    public virtual void Heal(int amount)
-    {
-        if (amount <= 0) return;
-        currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
-        HealthUpdate?.Invoke(currentHealth, maxHealth);
-    }
-
     protected abstract void Die();
 
-    public void ResetHealth()
+    protected void ResetHealth(int Health)
     {
-        currentHealth = maxHealth;
+        currentHealth = Health;
         HealthUpdate?.Invoke(currentHealth, maxHealth);
     }
 
 }
+/*
+protected virtual void Heal(int amount)
+{
+   if (amount <= 0) return;
+   currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
+   HealthUpdate?.Invoke(currentHealth, maxHealth);
+}*/ //Update sau prototype

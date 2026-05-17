@@ -12,9 +12,15 @@ public class PlayerMovement : MonoBehaviour
     [SerializeField] float rightPadding = 10f;
     [SerializeField] float upPadding = -10f;
     [SerializeField] float bellowPadding = 10f;
+
     void Start()
     {
         moveAction = InputSystem.actions.FindAction("Move");
+        if (moveAction == null)
+        {
+            Debug.LogError("PlayerMovement: InputSystem is not assigned!");
+            return;
+        }
         InitBounced();
     }
 
@@ -41,4 +47,10 @@ public class PlayerMovement : MonoBehaviour
         minBounce = mainCamera.ViewportToWorldPoint(new Vector2(0, 0));
         maxBounce = mainCamera.ViewportToWorldPoint(new Vector2(1, 1));
     }
+
+    public bool IsMoving()
+    {
+        return moveInput != Vector3.zero;
+    }
+
 }
