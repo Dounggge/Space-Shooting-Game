@@ -28,11 +28,11 @@ public class Pools : MonoBehaviour
 
     public GameObject SetObject()
     {
-        if (pool == null)
+        /*if (pool == null)
         {
-            Debug.LogError("Pools: pool is null. Did you call InitPool()?");
+            //Debug.LogError("Pools: pool is null. Did you call InitPool()?");
             return null;
-        }
+        }*/
 
         GameObject obj;
 
@@ -42,7 +42,7 @@ public class Pools : MonoBehaviour
         }
         else
         {
-            Debug.LogWarning("Pools exhausted, instantiating extra object.");
+            //Debug.LogWarning("Pools exhausted, instantiating extra object.");
             obj = Instantiate(prefab);
         }
 

@@ -4,11 +4,11 @@ using System.Collections;
 public class PlayerHealth : Health
 {
     [SerializeField] int playerMaxHealth = 100;
-    [SerializeField] int damageOfPlayer = 10;
+    [SerializeField] public int damageOfPlayer = 20;
     [SerializeField] Sprite[] spriteUpdate;
 
     SpriteRenderer spriteRenderer;
-
+    EnemyHealth enemyDamage;
 
     void Awake()
     {
@@ -19,9 +19,9 @@ public class PlayerHealth : Health
         spriteRenderer = GetComponent<SpriteRenderer>();
         spriteRenderer.sprite = spriteUpdate[0];
 
+        maxHealth = playerMaxHealth;
         ResetHealth(playerMaxHealth);
 
-        HealthUpdate += null;
         HealthUpdate += OnHealthChanged;
     }
 
@@ -32,18 +32,31 @@ public class PlayerHealth : Health
         if (spriteUpdate == null || spriteUpdate.Length == 0 || spriteRenderer == null)
             return;
 
+        if (max <= 0)
+            return;
+
         float healthPercent = (float)current / max;
-        while (healthPercent <= 0f || healthPercent > 1f)
+
+        if (current <= 0)
         {
-            ResetHealth(playerMaxHealth);
-            spriteRenderer.sprite = spriteUpdate[0];
+            return;
         }
-        if (healthPercent <= 0.75f && healthPercent > 0.5f)
+        else if (healthPercent > 0.75f)
+        {
+            spriteRenderer.sprite = spriteUpdate[0]; // full
+        }
+        else if (healthPercent > 0.5f)
+        {
             spriteRenderer.sprite = spriteUpdate[1];
-        else if (healthPercent <= 0.5f && healthPercent > 0.25f)
+        }
+        else if (healthPercent > 0.25f)
+        {
             spriteRenderer.sprite = spriteUpdate[2];
-        else if(healthPercent <= 0.25f && healthPercent > 0f)
+        }
+        else // 0 < healthPercent <= 0.25
+        {
             spriteRenderer.sprite = spriteUpdate[3];
+        }
     }
 
 
@@ -62,9 +75,11 @@ public class PlayerHealth : Health
 
     void OnTriggerEnter2D(Collider2D other)
     {
-        if(other.TryGetComponent<IDamageDealer>(out var dealer))
+        Debug.Log("triggered by " + other.name);
+        if (other.CompareTag("Enemy"))
         {
-            TakeDamage(damageOfPlayer);
+            enemyDamage = other.GetComponent<EnemyHealth>();
+            TakeDamage(enemyDamage.damageOfEnemy);
         }
     }
 }

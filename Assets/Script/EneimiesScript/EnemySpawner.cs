@@ -7,7 +7,6 @@ public class EnemySpawner : MonoBehaviour
     [SerializeField] Pools enemyPool;
     [SerializeField] int enemyCount = 5;
     [SerializeField] float timeBetweenWaves = 5f;
-    [SerializeField] bool isSpawning = false;
 
     WavesConfigSO currentWave;
     int currentWaveIndex = 0;
@@ -20,8 +19,6 @@ public class EnemySpawner : MonoBehaviour
 
     IEnumerator RunWaves()
     {
-        do
-        {
             foreach (WavesConfigSO wave in waves)
             {
                 currentWave = wave;
@@ -33,11 +30,8 @@ public class EnemySpawner : MonoBehaviour
                 // Wait between waves
                 yield return new WaitForSeconds(timeBetweenWaves);
             }
-
-        }
-        while (isSpawning);
-        Debug.Log("All waves complete.");
     }
+       
 
     IEnumerator SpawnWave(WavesConfigSO wave)
     {
@@ -51,23 +45,25 @@ public class EnemySpawner : MonoBehaviour
     void SpawnEnemy()
     {
         GameObject enemy = enemyPool.SetObject();
+        if (enemy == null) return;
 
-        if (enemy == null)
+        enemy.SetActive(false);
+
+        EnemyHealth enemyHealth = enemy.GetComponent<EnemyHealth>();
+        if (enemyHealth != null)
         {
-            Debug.LogError("EnemySpawner.SpawnEnemy: pool returned null!");
-            return;
+            enemyHealth.InitEnemy(enemyPool);
         }
 
         PathFinding pf = enemy.GetComponent<PathFinding>();
-
         if (pf == null)
         {
-            Debug.LogError("EnemySpawner.SpawnEnemy: PathFinding missing on prefab!");
             enemyPool.ReturnObject(enemy);
             return;
         }
+        pf.InitPath(this);
 
-        pf.Init(this);
+        enemy.SetActive(true);
     }
 
     public WavesConfigSO GetCurrentWave() => currentWave;

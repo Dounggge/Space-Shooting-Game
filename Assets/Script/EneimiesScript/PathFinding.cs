@@ -8,21 +8,24 @@ public class PathFinding : MonoBehaviour
     Transform[] wayPoints;
     int wayPointIndex = 0;
     bool isReturned = false;
+    bool isDying = false;
 
     void Update()
     {
+        if (isDying) return;
         FollowPath();
     }
 
-    public void Init(EnemySpawner spawner)
+    public void InitPath(EnemySpawner spawner)
     {
+        isDying = false;
         isReturned = false;
         wayPointIndex = 0;
         enemySpawner = spawner;
 
         if (enemySpawner == null)
         {
-            Debug.LogError("PathFinding.Init: spawner is null!");
+            //Debug.LogError("PathFinding.Init: spawner is null!");
             return;
         }
 
@@ -31,7 +34,7 @@ public class PathFinding : MonoBehaviour
 
         if (waveConfig == null)
         {
-            Debug.LogError("PathFinding.Init: waveConfig is null!");
+            //Debug.LogError("PathFinding.Init: waveConfig is null!");
             return;
         }
 
@@ -39,16 +42,22 @@ public class PathFinding : MonoBehaviour
         transform.position = SetSpawnPoint();
     }
 
+    public void StopMovement()
+    {
+        isDying = true;
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+            rb.linearVelocity = Vector2.zero;
+    }
+
+
     void FollowPath()
     {
-        // Guard: block all frames until Init() has fully run
         if (isReturned || wayPoints == null || wayPoints.Length == 0 || waveConfig == null || pool == null)
             return;
 
-        // Reached end of path — return once and stop
         if (wayPointIndex >= wayPoints.Length)
         {
-            isReturned = true;          // prevents re-entry this frame and next
+            isReturned = true;
             pool.ReturnObject(gameObject);
             return;
         }
@@ -70,7 +79,7 @@ public class PathFinding : MonoBehaviour
 
         if (spawnPoints == null || spawnPoints.Length == 0)
         {
-            Debug.LogError("PathFinding.SetSpawnPoint: no spawn points defined in waveConfig!");
+            //Debug.LogError("PathFinding.SetSpawnPoint: no spawn points defined in waveConfig!");
             return Vector3.zero;
         }
 
