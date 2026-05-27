@@ -3,7 +3,7 @@ using UnityEngine.SceneManagement;
 
 public class SceneManage : MonoBehaviour
 {
-    private SceneManage instance;
+    public static SceneManage instance;
 
     private void Awake()
     {
@@ -23,19 +23,24 @@ public class SceneManage : MonoBehaviour
         }
     }
 
-    public void LoadGameplayScene()
+    public void LoadGameplay1Scene()
     {
         SceneManager.LoadScene(1);
     }
 
-    public void LoadUpgradeScene()
+    public void LoadGameplay2Scene()
     {
         SceneManager.LoadScene(2);
     }
 
-    public void LoadGameOverScene()
+    public void LoadGameplay3Scene()
     {
         SceneManager.LoadScene(3);
+    }
+
+    public void LoadMenuScene()
+    {
+        SceneManager.LoadScene(0);
     }
 
     public void QuitGame()

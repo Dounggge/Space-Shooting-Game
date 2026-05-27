@@ -1,15 +1,20 @@
 using UnityEngine;
 using System;
 
-public abstract class Health : MonoBehaviour
+public abstract class Health : MonoBehaviour, IDamageDealer
 {
     protected int maxHealth;
     protected int currentHealth;
+    protected int damage;
+    protected LayerMask layer;
+
 
     public event Action<int, int> HealthUpdate; //current health, max health
 
+    public int GetDamage() => damage;
+    public LayerMask LayerDamage => layer;
 
-    protected virtual void TakeDamage(int damage)
+    public void TakeDamage(int damage)
     {
         if (damage <= 0) return;
         currentHealth = Mathf.Clamp(currentHealth - damage, 0, maxHealth);
@@ -34,3 +39,6 @@ protected virtual void Heal(int amount)
    currentHealth = Mathf.Clamp(currentHealth + amount, 0, maxHealth);
    HealthUpdate?.Invoke(currentHealth, maxHealth);
 }*/ //Update sau prototype
+
+//Bat ke doi tuong nao co Healh thi deu co kha nang gay damage va bi damage
+//Nhung khong nen dung interface vao abstract class vi no se gay coupling va phuc tap hoa code

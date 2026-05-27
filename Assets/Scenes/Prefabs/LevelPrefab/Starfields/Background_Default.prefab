@@ -105,5 +105,5 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Scrolling
   scrollSpeed: 0.15
-  boostedScrollSpeed: 0.22
-  acceleration: 0.5
+  boostedScrollSpeed: 0.3
+  acceleration: 0.1

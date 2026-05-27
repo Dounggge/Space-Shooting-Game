@@ -7,12 +7,12 @@ public class Scrolling : MonoBehaviour
     [SerializeField] float acceleration = 0.5f;
     float currentSpeed;
     Material material;
-    PlayerMovement playerInput;
+    PlayerController playerInput;
 
     void Awake()
     {
         material = GetComponent<Renderer>().material;
-        playerInput = FindAnyObjectByType<PlayerMovement>();
+        playerInput = FindAnyObjectByType<PlayerController>();
     }
 
     void Update()

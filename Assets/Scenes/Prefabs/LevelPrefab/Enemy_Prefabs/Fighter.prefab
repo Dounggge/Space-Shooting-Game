@@ -16,6 +16,9 @@ GameObject:
   - component: {fileID: -8530067624464716562}
   - component: {fileID: 6750476280134028572}
   - component: {fileID: 860416317142815363}
+  - component: {fileID: -2291449365069675297}
+  - component: {fileID: 1289507358164257648}
+  - component: {fileID: -1894001267209553408}
   m_Layer: 8
   m_Name: Fighter
   m_TagString: Enemy
@@ -85,7 +88,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: e948a0542c88c3a49a3647832e80c497, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -157,8 +160,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: -0}
-  m_Size: {x: 1.31, y: 0.64}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 2, y: 0.64}
   m_Direction: 0
 --- !u!50 &-8530067624464716562
 Rigidbody2D:
@@ -197,7 +200,7 @@ Animator:
   m_GameObject: {fileID: 9056782308680426943}
   m_Enabled: 1
   m_Avatar: {fileID: 0}
-  m_Controller: {fileID: -591719685032926809, guid: a0fb7612ed6c32840b7c483957a9b290, type: 3}
+  m_Controller: {fileID: 9100000, guid: a629ba8e87c749440844cb1ab8ea2ba2, type: 2}
   m_CullingMode: 0
   m_UpdateMode: 0
   m_ApplyRootMotion: 0
@@ -222,4 +225,52 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
   enemyMaxHealth: 50
-  damageOfEnemy: 10
+  damageOfEnemy: 15
+  deathAnimation: 0.8
+--- !u!114 &-2291449365069675297
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8a900811bc16343a869ae6803294ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyShooting
+  bulletPool: {fileID: 3460582188539188231, guid: 4a3c7b0347efef047829427d9d653d2b, type: 3}
+  firePoint: {fileID: 4781915123507534369}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  fireRate: 1.8
+--- !u!114 &1289507358164257648
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a9765ce6c978d946864e95ad9f2270a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterBehaviour
+  stopDistance: 0.1
+  bobAmplitude: 0.8
+  bobFrequency: 0.5
+--- !u!114 &-1894001267209553408
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a163d21b9c9968249aa7f89b681dc7ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySound
+  destructionClip: {fileID: 8300000, guid: e60114c8fbf47614d9b6e604a7ee5a45, type: 3}
+  volume: 0.1

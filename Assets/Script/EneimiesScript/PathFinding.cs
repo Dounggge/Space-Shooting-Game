@@ -2,88 +2,69 @@ using UnityEngine;
 
 public class PathFinding : MonoBehaviour
 {
-    EnemySpawner enemySpawner;
-    WavesConfigSO waveConfig;
-    Pools pool;
-    Transform[] wayPoints;
-    int wayPointIndex = 0;
-    bool isReturned = false;
-    bool isDying = false;
-
-    void Update()
-    {
-        if (isDying) return;
-        FollowPath();
-    }
+    private EnemySpawner enemySpawner;
+    private WavesConfigSO waveConfig;
+    private Pools pool;
+    private Transform target;
+    private bool isPaused = false;
+    private bool isDying = false;
 
     public void InitPath(EnemySpawner spawner)
     {
-        isDying = false;
-        isReturned = false;
-        wayPointIndex = 0;
         enemySpawner = spawner;
-
-        if (enemySpawner == null)
+        if (spawner != null)
         {
-            //Debug.LogError("PathFinding.Init: spawner is null!");
-            return;
+            waveConfig = spawner.GetCurrentWave();
+            pool = spawner.EnemyPool();
         }
+        isDying = false;
+        isPaused = false;
+        target = null;
 
-        waveConfig = enemySpawner.GetCurrentWave();
-        pool = enemySpawner.EnemyPool();
-
-        if (waveConfig == null)
-        {
-            //Debug.LogError("PathFinding.Init: waveConfig is null!");
-            return;
-        }
-
-        wayPoints = waveConfig.GetWayPoint();
-        transform.position = SetSpawnPoint();
+        Transform[] spawnPoints = waveConfig?.GetSpawnPoint();
+        if (spawnPoints != null && spawnPoints.Length > 0)
+            transform.position = spawnPoints[Random.Range(0, spawnPoints.Length)].position;
+        else
+            transform.position = Vector3.zero;
     }
+
+    public void SetTarget(Transform newTarget) => target = newTarget;
+
+    public void Pause()
+    {
+        isPaused = true;
+        Rigidbody2D rb = GetComponent<Rigidbody2D>();
+        if (rb) rb.linearVelocity = Vector2.zero;
+    }
+
+    public void Resume() => isPaused = false;
 
     public void StopMovement()
     {
         isDying = true;
-        Rigidbody2D rb = GetComponent<Rigidbody2D>();
-            rb.linearVelocity = Vector2.zero;
+        Pause();
     }
 
-
-    void FollowPath()
+    public void ReturnToPool()
     {
-        if (isReturned || wayPoints == null || wayPoints.Length == 0 || waveConfig == null || pool == null)
-            return;
-
-        if (wayPointIndex >= wayPoints.Length)
-        {
-            isReturned = true;
+        enemySpawner?.OnEnemyRemoved();
+        if (pool != null)
             pool.ReturnObject(gameObject);
-            return;
-        }
-
-        Vector3 targetPosition = wayPoints[wayPointIndex].position;
-        float deltaMove = waveConfig.GetMoveSpeed() * Time.deltaTime;
-
-        transform.position = Vector3.MoveTowards(transform.position, targetPosition, deltaMove);
-
-        if (Vector3.Distance(transform.position, targetPosition) < 0.001f)
-        {
-            wayPointIndex++;
-        }
+        else
+            gameObject.SetActive(false);
     }
 
-    private Vector3 SetSpawnPoint()
+    void Update()
     {
-        Transform[] spawnPoints = waveConfig.GetSpawnPoint();
+        if (isDying || isPaused || target == null || waveConfig == null) return;
 
-        if (spawnPoints == null || spawnPoints.Length == 0)
+        float speed = waveConfig.GetMoveSpeed();
+        transform.position = Vector3.MoveTowards(transform.position, target.position, speed * Time.deltaTime);
+
+        if (Vector3.Distance(transform.position, target.position) < 0.01f)
         {
-            //Debug.LogError("PathFinding.SetSpawnPoint: no spawn points defined in waveConfig!");
-            return Vector3.zero;
+            transform.position = target.position;
+            target = null;
         }
-
-        int randomIndex = Random.Range(0, spawnPoints.Length);
-        return spawnPoints[randomIndex].position;
     }
 }

@@ -3,58 +3,56 @@ using System.Collections.Generic;
 
 public class Pools : MonoBehaviour
 {
-    [SerializeField] protected GameObject prefab;
-    [SerializeField] public int poolSize = 4;
+    [SerializeField] private GameObject prefab;
+    [SerializeField] private int poolSize = 10;
 
     private Queue<GameObject> pool = new Queue<GameObject>();
+    private bool isInitialized = false;
 
-    public void InitPool(int size)
+    //private void Awake()
+    //{
+    //    if (prefab == null)
+    //        Debug.LogError($"[Pools] {name}: prefab not found!");
+    //}
+
+    private void Initialize()
     {
-        pool = new Queue<GameObject>();
+        if (isInitialized) return;
+        isInitialized = true;
 
-        if (prefab == null)
-        {
-            Debug.LogError("Pools: prefab is not assigned!");
-            return;
-        }
+        for (int i = 0; i < poolSize; i++)
+            pool.Enqueue(CreateObject());
+    }
 
-        for (int i = 0; i < size; i++)
-        {
-            GameObject obj = Instantiate(prefab);
-            obj.SetActive(false);
-            pool.Enqueue(obj);
-        }
+    private GameObject CreateObject()
+    {
+        GameObject obj = Instantiate(prefab);
+        obj.SetActive(false);
+
+        if (gameObject.scene.isLoaded)
+            obj.transform.SetParent(transform, false);
+
+        if (obj.TryGetComponent<Bullet>(out var bullet))
+            bullet.SetPool(this);
+
+        return obj;
     }
 
     public GameObject SetObject()
     {
-        /*if (pool == null)
-        {
-            //Debug.LogError("Pools: pool is null. Did you call InitPool()?");
-            return null;
-        }*/
+        Initialize();
 
-        GameObject obj;
-
-        if (pool.Count > 0)
-        {
-            obj = pool.Dequeue();
-        }
-        else
-        {
-            //Debug.LogWarning("Pools exhausted, instantiating extra object.");
-            obj = Instantiate(prefab);
-        }
-
-        obj.SetActive(true);
+        GameObject obj = pool.Count > 0 ? pool.Dequeue() : CreateObject();
+        obj.SetActive(false);
         return obj;
     }
 
     public void ReturnObject(GameObject obj)
     {
         if (obj == null) return;
-
         obj.SetActive(false);
-        pool.Enqueue(obj);
+
+        if (!pool.Contains(obj))
+            pool.Enqueue(obj);
     }
 }

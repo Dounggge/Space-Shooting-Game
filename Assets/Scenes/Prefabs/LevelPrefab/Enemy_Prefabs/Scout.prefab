@@ -14,6 +14,11 @@ GameObject:
   - component: {fileID: 5819363286452573097}
   - component: {fileID: 3533489813768345995}
   - component: {fileID: -7997486266995287791}
+  - component: {fileID: 3999006086080461102}
+  - component: {fileID: -5896431979012366798}
+  - component: {fileID: 2203886287511231656}
+  - component: {fileID: 8399849185662697434}
+  - component: {fileID: 5419967451212732039}
   m_Layer: 8
   m_Name: Scout
   m_TagString: Enemy
@@ -83,7 +88,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 598fd2a42114aba4c883d992e80da855, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -185,3 +190,87 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Pools
   prefab: {fileID: 9056782308680426943}
   poolSize: 4
+--- !u!114 &3999006086080461102
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7213baf3c240c4a851a48f38705b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  enemyMaxHealth: 10
+  damageOfEnemy: 20
+  deathAnimation: 1
+--- !u!95 &-5896431979012366798
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 847025eb9a0d33f49b563988ee9f3f94, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2203886287511231656
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a163d21b9c9968249aa7f89b681dc7ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySound
+  destructionClip: {fileID: 8300000, guid: e60114c8fbf47614d9b6e604a7ee5a45, type: 3}
+  volume: 0.2
+--- !u!114 &8399849185662697434
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: cb8a900811bc16343a869ae6803294ac, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyShooting
+  bulletPool: {fileID: 6335394850458532256, guid: 78d44aa13b6ee5a409a05c6e23eea04f, type: 3}
+  firePoint: {fileID: 4781915123507534369}
+  targetLayer:
+    serializedVersion: 2
+    m_Bits: 128
+  fireRate: 1.5
+--- !u!114 &5419967451212732039
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1a9765ce6c978d946864e95ad9f2270a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FighterBehaviour
+  stopDistance: 0.5
+  bobAmplitude: 0.15
+  bobFrequency: 0.5

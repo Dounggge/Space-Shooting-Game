@@ -14,6 +14,10 @@ GameObject:
   - component: {fileID: 8049027614682148790}
   - component: {fileID: -5699956273862361825}
   - component: {fileID: 7784850459663433757}
+  - component: {fileID: 6938973721008722298}
+  - component: {fileID: 7440648476029444097}
+  - component: {fileID: 8707003046435615589}
+  - component: {fileID: -4607505068285672246}
   m_Layer: 8
   m_Name: Bomber
   m_TagString: Enemy
@@ -83,7 +87,7 @@ SpriteRenderer:
   m_GlobalIlluminationMeshLod: 0
   m_SortingLayerID: 0
   m_SortingLayer: 0
-  m_SortingOrder: 0
+  m_SortingOrder: 1
   m_MaskInteraction: 0
   m_Sprite: {fileID: 21300000, guid: 60eedf29a61dced468a3028ef56ed1ae, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
@@ -129,8 +133,8 @@ CapsuleCollider2D:
   m_UsedByEffector: 0
   m_CompositeOperation: 0
   m_CompositeOrder: 0
-  m_Offset: {x: 0, y: 0.09}
-  m_Size: {x: 1.6, y: 1.47}
+  m_Offset: {x: 0, y: 0}
+  m_Size: {x: 1.3, y: 1.47}
   m_Direction: 0
 --- !u!50 &8049027614682148790
 Rigidbody2D:
@@ -185,3 +189,70 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::Pools
   prefab: {fileID: 9056782308680426943}
   poolSize: 4
+--- !u!114 &6938973721008722298
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab7213baf3c240c4a851a48f38705b9d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemyHealth
+  enemyMaxHealth: 80
+  damageOfEnemy: 10
+  deathAnimation: 1
+--- !u!114 &7440648476029444097
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: ab38c37979da9cb49821beab53e6e392, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BomberBehaviour
+  waitBeforeDash: 3
+  dashSpeed: 13
+  dashDamage: 20
+  explosionRange: 0.5
+--- !u!95 &8707003046435615589
+Animator:
+  serializedVersion: 7
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_Avatar: {fileID: 0}
+  m_Controller: {fileID: 9100000, guid: 1c5c819d52ca6804ea9c0f0d6cc674c7, type: 2}
+  m_CullingMode: 0
+  m_UpdateMode: 0
+  m_ApplyRootMotion: 0
+  m_LinearVelocityBlending: 0
+  m_StabilizeFeet: 0
+  m_AnimatePhysics: 0
+  m_WarningMessage: 
+  m_HasTransformHierarchy: 1
+  m_AllowConstantClipSamplingOptimization: 1
+  m_KeepAnimatorStateOnDisable: 0
+  m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &-4607505068285672246
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9056782308680426943}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a163d21b9c9968249aa7f89b681dc7ba, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::EnemySound
+  destructionClip: {fileID: 8300000, guid: e60114c8fbf47614d9b6e604a7ee5a45, type: 3}
+  volume: 0.1

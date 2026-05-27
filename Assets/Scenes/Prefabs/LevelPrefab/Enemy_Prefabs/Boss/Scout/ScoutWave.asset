@@ -1,0 +1,22 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9f55543ec67992d4f9472965c89814d3, type: 3}
+  m_Name: ScoutWave
+  m_EditorClassIdentifier: Assembly-CSharp::WavesConfigSO
+  pathPrefab: {fileID: 5323511834849117341, guid: 9b34f53efd5c82f47a3a84e079dd809c, type: 3}
+  spawnPrefab: {fileID: 3639522784310976878, guid: 50fb298017b99674bb3d2b47b45c3f63, type: 3}
+  enemyMoveSpeed: 2
+  enemyCount: 5
+  timeBetweenWaves: 5
+  timeBetweenEnemySpawns: 1
+  enemySpawnVariance: 0.5
+  minimumSpawnTime: 0.5
