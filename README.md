@@ -2,6 +2,7 @@
 
 A minimalist **2D space shooter prototype** built with Unity.  
 Survive 3 stages, dodge bullets, and destroy the final boss.
+GDD: https://docs.google.com/document/d/1WG9Rtowb8U-Z-fNCQySUNy7Rn0LgIDFfdhP1vulESNk/edit?usp=sharing
 
 > No scoring, no upgrades, no resource collection – just pure arcade shooting.
 
